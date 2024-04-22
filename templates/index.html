@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Manager</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f7f7f7; }
+        .container { padding-top: 50px; }
+        .alert-custom { background-color: #f4f1bb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center;">Password Manager</h1>
+        <form action="/" method="post" class="mb-3">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="salt">Salt (optional for storing)</label>
+                <input type="text" class="form-control" id="salt" name="salt" placeholder="Enter salt (if verifying)">
+            </div>
+            <div class="form-group">
+                <label for="hash">Hash (optional for storing)</label>
+                <input type="text" class="form-control" id="hash" name="hash" placeholder="Enter hash (if verifying)">
+            </div>
+            <button type="submit" name="action" value="Store" class="btn btn-primary" onclick="updateRequirements('Store')">Store Password</button>
+            <button type="submit" name="action" value="Verify" class="btn btn-info" onclick="updateRequirements('Verify')">Verify Password</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-custom">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <!-- Bootstrap and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    <script>
+        function updateRequirements(action) {
+            var saltField = document.getElementById('salt');
+            var hashField = document.getElementById('hash');
+            saltField.required = action === 'Verify';
+            hashField.required = action === 'Verify';
+        }
+    </script>
+</body>
+</html>
